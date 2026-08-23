@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wi-Fi Simulator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .container {
+      width: min(92%, 520px);
+      margin: 0 auto;
+      padding: 35px 0;
+    }
+    h1 { margin-bottom: 8px; }
+    .subtitle { color: #94a3b8; margin-top: 0; }
+    .wifi-list { display: grid; gap: 12px; margin-top: 25px; }
+    .wifi {
+      width: 100%;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: white;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: .2s;
+    }
+    .wifi:hover, .wifi.selected {
+      border-color: #38bdf8;
+      background: #172554;
+    }
+    .name { font-size: 17px; font-weight: 600; }
+    .info { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+    .signal { font-size: 22px; }
+    .result {
+      margin-top: 25px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #111827;
+      border: 1px solid #334155;
+      display: none;
+    }
+    .result.show { display: block; }
+    .connect {
+      margin-top: 14px;
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px;
+      background: #22c55e;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .connect:active { transform: scale(.98); }
+    #status { margin-top: 12px; color: #86efac; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>📶 Wi-Fi Simulator</h1>
+    <p class="subtitle">Pilih jaringan Wi-Fi yang tersedia di sekitar</p>
+
+    <div class="wifi-list" id="wifiList"></div>
+
+    <div class="result" id="result">
+      <strong id="selectedName"></strong>
+      <div class="info">Jaringan dipilih</div>
+      <button class="connect" onclick="connectWifi()">Hubungkan</button>
+      <div id="status"></div>
+    </div>
+  </main>
+
+  <script>
+    const networks = [
+      { name: "WiFi Rumah", signal: "▂▄▆█", security: "WPA2" },
+      { name: "IndiHome_5G", signal: "▂▄▆█", security: "WPA2" },
+      { name: "KOS_WIFI", signal: "▂▄▆", security: "WPA2" },
+      { name: "Free WiFi", signal: "▂▄", security: "Terbuka" },
+      { name: "Dhealo_WiFi", signal: "▂▄▆█", security: "WPA2" }
+    ];
+
+    const wifiList = document.getElementById("wifiList");
+    const result = document.getElementById("result");
+    const selectedName = document.getElementById("selectedName");
+    const status = document.getElementById("status");
+
+    networks.forEach((wifi, index) => {
+      const button = document.createElement("button");
+      button.className = "wifi";
+      button.innerHTML = `
+        <div>
+          <div class="name">📶 ${wifi.name}</div>
+          <div class="info">${wifi.security} • Jaringan simulasi</div>
+        </div>
+        <div class="signal">${wifi.signal}</div>
+      `;
+
+      button.onclick = () => {
+        document.querySelectorAll(".wifi").forEach(el => el.classList.remove("selected"));
+        button.classList.add("selected");
+        selectedName.textContent = wifi.name;
+        status.textContent = "";
+        result.classList.add("show");
+      };
+
+      wifiList.appendChild(button);
+    });
+
+    function connectWifi() {
+      status.textContent = "✓ Berhasil terhubung (simulasi)";
+    }
+  </script>
+</body>
+</html>
