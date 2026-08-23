@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiFi Scanner Dummy</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 15px 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #cbd5e1;
+      margin-bottom: 24px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      background: #22c55e;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 18px;
+    }
+
+    .status {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .card.selected {
+      outline: 2px solid #22c55e;
+    }
+
+    .wifi {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .icon {
+      font-size: 30px;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .details {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>📶 Wi-Fi Scanner</h1>
+
+    <div class="subtitle">
+      Jaringan Wi-Fi di sekitar (simulasi)
+    </div>
+
+    <button onclick="scanWifi()">
+      🔄 Scan Wi-Fi
+    </button>
+
+    <div id="status" class="status">
+      Menampilkan jaringan Wi-Fi dummy...
+    </div>
+
+    <div id="wifiList"></div>
+
+  </div>
+
+  <script>
+
+    const networks = [
+      {
+        name: "Rumah_Indah",
+        signal: "Sangat kuat",
+        security: "WPA2"
+      },
+      {
+        name: "WiFi_Tetangga",
+        signal: "Kuat",
+        security: "WPA2"
+      },
+      {
+        name: "Kopi_Nusantara",
+        signal: "Sedang",
+        security: "WPA2"
+      },
+      {
+        name: "Free_WiFi",
+        signal: "Sedang",
+        security: "Terbuka"
+      },
+      {
+        name: "NET_5G",
+        signal: "Lemah",
+        security: "WPA2"
+      }
+    ];
+
+    function renderWifi() {
+
+      const list = document.getElementById("wifiList");
+
+      list.innerHTML = "";
+
+      networks.forEach(function(wifi) {
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="wifi">
+
+            <div class="icon">
+              📶
+            </div>
+
+            <div class="info">
+
+              <div class="name">
+                ${wifi.name}
+              </div>
+
+              <div class="details">
+                ${wifi.signal} • ${wifi.security}
+              </div>
+
+            </div>
+
+            <div>
+              ›
+            </div>
+
+          </div>
+        `;
+
+        card.onclick = function() {
+
+          document
+            .querySelectorAll(".card")
+            .forEach(function(item) {
+              item.classList.remove("selected");
+            });
+
+          card.classList.add("selected");
+
+          document.getElementById("status").textContent =
+            "Jaringan dipilih: " +
+            wifi.name +
+            " (simulasi)";
+        };
+
+        list.appendChild(card);
+
+      });
+    }
+
+    function scanWifi() {
+
+      const status =
+        document.getElementById("status");
+
+      status.textContent =
+        "🔍 Memindai jaringan...";
+
+      document.getElementById("wifiList").innerHTML = "";
+
+      setTimeout(function() {
+
+        status.textContent =
+          "✅ Pemindaian selesai — " +
+          networks.length +
+          " jaringan ditemukan.";
+
+        renderWifi();
+
+      }, 800);
+
+    }
+
+    renderWifi();
+
+  </script>
+
+</body>
+</html>
